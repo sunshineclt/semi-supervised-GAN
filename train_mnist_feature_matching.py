@@ -165,5 +165,5 @@ for epoch in range(300):
     test_err_record /= nr_batches_test
 
     # report
-    print("Iteration %d, time = %ds, loss_lab = %.4f, loss_unl = %.4f, train err = %.4f, test err = %.4f" % (epoch, time.time()-begin, loss_label, loss_unlabel, train_err, test_err_record))
+    print("Iteration %d, time = %ds, loss_lab = %.4f, loss_unl = %.4f, train err = %.4f, test err = %.4f" % (epoch, time.time()-begin, loss_label_record, loss_unlabel_record, train_err_record, test_err_record))
     sys.stdout.flush()
