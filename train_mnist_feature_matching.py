@@ -33,6 +33,7 @@ trainy = np.concatenate([data['y_train'], data['y_valid']]).astype(np.int32)
 nr_batches_train = int(trainx.shape[0]/args.batch_size)
 testx = data['x_test']
 testy = data['y_test'].astype(np.int32)
+testy = np.reshape(testy, [testy.shape[0], 1])
 nr_batches_test = int(testx.shape[0]/args.batch_size)
 
 # select labeled data
