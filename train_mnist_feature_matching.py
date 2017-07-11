@@ -155,14 +155,15 @@ for epoch in range(300):
     train_err_record /= nr_batches_train
 
     # test
-    test_err = 0.
+    test_err_record = 0.
     for t in range(nr_batches_test):
-        sess.run(test_err, feed_dict={
+        test_err_this = sess.run(test_error, feed_dict={
             x_label: testx[t*args.batch_size:(t+1)*args.batch_size],
             labels: testy[t*args.batch_size:(t+1)*args.batch_size]
         })
-    test_err /= nr_batches_test
+        test_err_record += test_err_this
+    test_err_record /= nr_batches_test
 
     # report
-    print("Iteration %d, time = %ds, loss_lab = %.4f, loss_unl = %.4f, train err = %.4f, test err = %.4f" % (epoch, time.time()-begin, loss_label, loss_unlabel, train_err, test_err))
+    print("Iteration %d, time = %ds, loss_lab = %.4f, loss_unl = %.4f, train err = %.4f, test err = %.4f" % (epoch, time.time()-begin, loss_label, loss_unlabel, train_err, test_err_record))
     sys.stdout.flush()
