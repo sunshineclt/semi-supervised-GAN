@@ -1,19 +1,18 @@
-import tensorflow as tf
-
+import keras.backend as K
+from keras import regularizers
 from keras.layers import Input, BatchNormalization, Dense, GaussianNoise
 from keras.models import Model
-from keras import regularizers
 
 
 class Generator:
     def __init__(self):
         # generator
         self.input = Input([100])
-        layer = Dense(500, activation=tf.nn.softplus)(self.input)
+        layer = Dense(500, activation=K.softplus)(self.input)
         layer = BatchNormalization()(layer)
-        layer = Dense(500, activation=tf.nn.softplus)(layer)
+        layer = Dense(500, activation=K.softplus)(layer)
         layer = BatchNormalization()(layer)
-        self.output = Dense(28 ** 2, activation=tf.nn.sigmoid, kernel_regularizer=regularizers.l2())(layer)
+        self.output = Dense(28 ** 2, activation=K.sigmoid, kernel_regularizer=regularizers.l2())(layer)
         self.model = Model(inputs=self.input, outputs=self.output)
 
 
