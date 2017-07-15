@@ -60,6 +60,7 @@ K.set_learning_phase(1)
 # network
 discriminator_model = Discriminator()
 discriminator = discriminator_model.model
+discriminator_feature = discriminator_model.feature
 generator_model = Generator()
 generator = generator_model.model
 
