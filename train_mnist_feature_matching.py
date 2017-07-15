@@ -90,9 +90,9 @@ feature_real = tf.reduce_mean(discriminator_feature(x_unlabel), axis=0)
 loss_generator = tf.reduce_mean(tf.square(feature_generated - feature_real))
 
 train_err = tf.reduce_mean(
-    tf.to_float(tf.not_equal(tf.argmax(output_before_softmax_label, axis=1), tf.cast(labels, tf.int64))))
+    tf.to_float(tf.not_equal(tf.argmax(output_before_softmax_label, axis=1), tf.cast(tf.reshape(labels, [args.batch_size]), tf.int64))))
 test_error = tf.reduce_mean(
-    tf.to_float(tf.not_equal(tf.argmax(output_before_softmax_label, axis=1), tf.cast(labels, tf.int64))))
+    tf.to_float(tf.not_equal(tf.argmax(output_before_softmax_label, axis=1), tf.cast(tf.reshape(labels, [args.batch_size]), tf.int64))))
 
 # train settings
 discriminator_optimizer = tf.train.AdamOptimizer(learning_rate=0.003)
