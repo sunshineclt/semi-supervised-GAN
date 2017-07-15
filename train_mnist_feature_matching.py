@@ -97,9 +97,15 @@ test_error = tf.reduce_mean(
 
 # train settings
 discriminator_optimizer = tf.train.AdamOptimizer(learning_rate=0.003)
-discriminator_train = discriminator_optimizer.minimize(loss=loss_discriminator)
+discriminator_gradients = discriminator_optimizer.compute_gradients(loss_discriminator, discriminator.trainable_weights)
+# discriminator_grads_and_vars = zip(discriminator_gradients, discriminator.trainable_weights)
+discriminator_train = discriminator_optimizer.apply_gradients(discriminator_gradients)
+
 generator_optimizer = tf.train.AdamOptimizer(learning_rate=0.003)
-generator_train = generator_optimizer.minimize(loss_generator)
+generator_gradients = generator_optimizer.compute_gradients(loss_generator, generator.trainable_weights)
+# generator_grads_and_vars = zip(generator_gradients, generator.trainable_weights)
+generator_train = generator_optimizer.apply_gradients(generator_gradients)
+
 sess.run(tf.global_variables_initializer())
 
 for epoch in range(300):
