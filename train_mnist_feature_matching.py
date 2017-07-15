@@ -81,9 +81,8 @@ index_flattened = tf.range(0, args.batch_size) * output_before_softmax_label.sha
 l_label = tf.gather(tf.reshape(output_before_softmax_label, [-1]), index_flattened)
 l_unlabel = tf.reduce_logsumexp(output_before_softmax_unlabel)
 loss_label = -tf.reduce_mean(l_label) + tf.reduce_mean(z_exp_label)
-loss_unlabel = -0.5 * tf.reduce_mean(l_unlabel) + 0.5 * tf.reduce_mean(
-    tf.nn.softplus(tf.reduce_logsumexp(output_before_softmax_unlabel))) + 0.5 * tf.reduce_mean(
-    tf.nn.softplus(tf.reduce_logsumexp(output_before_softmax_fake)))
+loss_unlabel = -0.5 * tf.reduce_mean(l_unlabel) + 0.5 * tf.reduce_mean(tf.nn.softplus(l_unlabel)) + \
+               0.5 * tf.reduce_mean(tf.nn.softplus(tf.reduce_logsumexp(output_before_softmax_fake)))
 loss_discriminator = tf.add(loss_label, tf.multiply(loss_unlabel, args.unlabeled_weight))
 
 feature_generated = tf.reduce_mean(discriminator_feature(fake_image), axis=0)
@@ -137,10 +136,11 @@ for epoch in range(300):
                 labels: trainy[t * args.batch_size:(t + 1) * args.batch_size],
                 noise: noise_feed
             })
-
         loss_label_record += loss_label_this
         loss_unlabel_record += loss_unlabel_this
         train_err_record += train_err_this
+
+        noise_feed = noise_gen(args.batch_size, 100)
         _, loss_generator_this = sess.run([generator_train, loss_generator], feed_dict={
             noise: noise_feed,
             x_unlabel: trainx_unl2[t * args.batch_size:(t + 1) * args.batch_size]
