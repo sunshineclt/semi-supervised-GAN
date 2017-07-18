@@ -77,7 +77,7 @@ output_before_softmax_fake = discriminator(fake_image)
 z_exp_label = tf.reduce_mean(tf.reduce_logsumexp(output_before_softmax_label))
 z_exp_unlabel = tf.reduce_mean(tf.reduce_logsumexp(output_before_softmax_unlabel))
 z_exp_fake = tf.reduce_mean(tf.reduce_logsumexp(output_before_softmax_fake))
-index_flattened = tf.range(0, args.batch_size) * output_before_softmax_label.shape[1] + labels
+index_flattened = tf.range(0, args.batch_size) * output_before_softmax_label.shape[1] + tf.reshape(labels, [args.batch_size])
 l_label = tf.gather(tf.reshape(output_before_softmax_label, [-1]), index_flattened)
 l_unlabel = tf.reduce_logsumexp(output_before_softmax_unlabel)
 loss_label = -tf.reduce_mean(l_label) + tf.reduce_mean(z_exp_label)
@@ -136,6 +136,7 @@ for epoch in range(300):
                 labels: trainy[t * args.batch_size:(t + 1) * args.batch_size],
                 noise: noise_feed
             })
+
         loss_label_record += loss_label_this
         loss_unlabel_record += loss_unlabel_this
         train_err_record += train_err_this
