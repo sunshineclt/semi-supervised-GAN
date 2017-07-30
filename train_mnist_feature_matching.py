@@ -95,12 +95,12 @@ test_error = tf.reduce_mean(
     tf.to_float(tf.not_equal(tf.argmax(output_before_softmax_label, axis=1), tf.cast(tf.reshape(labels, [args.batch_size]), tf.int64))))
 
 # train settings
-discriminator_optimizer = tf.train.AdamOptimizer(learning_rate=0.003)
+discriminator_optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
 discriminator_gradients = discriminator_optimizer.compute_gradients(loss_discriminator, discriminator.trainable_weights)
 # discriminator_grads_and_vars = zip(discriminator_gradients, discriminator.trainable_weights)
 discriminator_train = discriminator_optimizer.apply_gradients(discriminator_gradients)
 
-generator_optimizer = tf.train.AdamOptimizer(learning_rate=0.003)
+generator_optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
 generator_gradients = generator_optimizer.compute_gradients(loss_generator, generator.trainable_weights)
 # generator_grads_and_vars = zip(generator_gradients, generator.trainable_weights)
 generator_train = generator_optimizer.apply_gradients(generator_gradients)
